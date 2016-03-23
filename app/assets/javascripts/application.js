@@ -26,12 +26,10 @@ $(document).ready(function() {
     $('.ideas').prepend(
       "<div class='idea' data-id='" +
         idea.id +
-        "'><h6>Published on: " +
-        idea.created_at +
-        "</h6><p>Title:<span class='title'>" +
+        "'><p><h4>Title:</h4><br><span class='title'>" +
         idea.title +
         "</span></p>" +
-        "</h6><p>Body:<span class='body'>" +
+        "</h6><p><h4>Body:</h4><br><span class='body'>" +
         idea.body +
         "</span></p>" +
         "</h6><p>Quality: " +
