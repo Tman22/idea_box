@@ -17,6 +17,7 @@
 
 $(document).ready(function() {
   fetchIdeas()
+  })
 
 
   function renderIdea(idea) {
@@ -25,19 +26,20 @@ $(document).ready(function() {
         idea.id +
         "'><h6>Published on: " +
         idea.created_at +
-        "</h6><p>Title: " +
+        "</h6><p>Title:<span class='title'>" +
         idea.title +
-        "</p>" +
-        "</h6><p>Body: " +
+        "</span></p>" +
+        "</h6><p>Body:<span class='body'>" +
         idea.body +
-        "</p>" +
+        "</span></p>" +
         "</h6><p>Quality: " +
         idea.quality +
         "</p>" +
         "<button id='delete-idea' name='button-fetch' class='btn btn-default btn-xs'>Delete</button>" +
         "<button id='thumbs-up' name='button-fetch' class='btn btn-default btn-xs'>Thumbs Up</button>" +
         "<button id='thumbs-down' name='button-fetch' class='btn btn-default btn-xs'>Thumbs Down</button>" +
-        "</div><br>"
+        "<button id='editing' name='button-fetch' class='btn btn-default btn-xs'>Edit</button> " +
+        "<br></div>"
     )
   }
 
@@ -66,12 +68,45 @@ $(document).ready(function() {
       data: { postParams },
       success: function(newIdea) {
         renderIdea(newIdea)
+        $('#idea-title').val('')
+        $('#idea-body').val('')
       },
       error: function(xhr) {
         console.log(xhr.responseText)
       }
     })
   }
+
+$('.ideas').delegate('#editing', 'click', function() {
+
+  var id = $(this).parent().attr('data-id')
+  var textArea = $(this).parent().find('span').attr('contentEditable', true)
+  var button = [this, $(this)]
+  button[1].text('Save')
+
+  $(button).on('click', function() {
+    this.id = 'saving'
+    textArea.attr('contentEditable', false)
+    var body = $(this).parent().find('.body').text()
+    var title = $(this).parent().find('.title').text()
+    $.ajax({
+      type: "PUT",
+      url: 'api/v1/ideas.json',
+      data: { id: id, postParams: { title: title,
+          body: body }  },
+      success: function(response) {
+        console.log('YEAH!')
+        button[0].id = "editing"
+        button[1].text('Edit')
+      },
+      error: function(xhr) {
+        console.log(xhr.responseText)
+      }
+    })
+  })
+
+})
+
 
   $('.ideas').delegate('#delete-idea', 'click', function() {
     var id = $(this).parent().attr('data-id')
@@ -89,7 +124,3 @@ $(document).ready(function() {
       }
     })
   })
-
-
-
-})

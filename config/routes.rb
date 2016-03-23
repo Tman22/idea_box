@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         get '/', to: 'ideas#index'
         post '/', to: 'ideas#create'
         delete '/', to: 'ideas#destroy'
+        put '/', to: 'ideas#update'
       end
     end
   end
