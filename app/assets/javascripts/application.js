@@ -17,6 +17,8 @@
 
 $(document).ready(function() {
   fetchIdeas()
+  editIdea()
+  updateIdea()
   })
 
 
@@ -50,77 +52,3 @@ $(document).ready(function() {
       })
     })
   }
-
-  $('#create').on('click', function() {
-    var postParams = {
-        title: $('#idea-title').val(),
-        body: $('#idea-body').val(),
-        quality: $('#idea-quality').val()
-    }
-    createIdea(postParams)
-  })
-
-
-  function createIdea(postParams) {
-    $.ajax ({
-      type: "POST",
-      url: "api/v1/ideas.json",
-      data: { postParams },
-      success: function(newIdea) {
-        renderIdea(newIdea)
-        $('#idea-title').val('')
-        $('#idea-body').val('')
-      },
-      error: function(xhr) {
-        console.log(xhr.responseText)
-      }
-    })
-  }
-
-$('.ideas').delegate('.editing', 'click', function() {
-  var id = $(this).parent().attr('data-id')
-  var textArea = $(this).parent().find('span').attr('contentEditable', true)
-  var body = $(this).parent().find('.body').text()
-  var title = $(this).parent().find('.title').text()
-  var button = $(this)
-  button.text('Save')
-  button.toggleClass('editing')
-
-  $(button).on('click', function() {
-    textArea.attr('contentEditable', false)
-    $.ajax({
-      type: "PUT",
-      url: 'api/v1/ideas.json',
-      data: { id: id, postParams: { title: title,
-          body: body }  },
-      success: function() {
-        // debugger
-        console.log('Success!')
-        button.toggleClass('editing')
-        button.text('Edit')
-      },
-      error: function(xhr) {
-        console.log(xhr.responseText)
-      }
-    })
-  })
-
-})
-
-
-  $('.ideas').delegate('#delete-idea', 'click', function() {
-    var id = $(this).parent().attr('data-id')
-    var theIdea = $(this).parent()
-
-    $.ajax({
-      type: "DELETE",
-      url: 'api/v1/ideas.json',
-      data: { id: id },
-      success: function(id) {
-        theIdea.remove()
-      },
-      error: function(xhr) {
-        console.log(xhr.responseText)
-      }
-    })
-  })
