@@ -38,7 +38,7 @@ $(document).ready(function() {
         "<button id='delete-idea' name='button-fetch' class='btn btn-default btn-xs'>Delete</button>" +
         "<button id='thumbs-up' name='button-fetch' class='btn btn-default btn-xs'>Thumbs Up</button>" +
         "<button id='thumbs-down' name='button-fetch' class='btn btn-default btn-xs'>Thumbs Down</button>" +
-        "<button id='editing' name='button-fetch' class='btn btn-default btn-xs'>Edit</button> " +
+        "<button name='button-fetch' class='btn btn-default btn-xs editing'>Edit</button> " +
         "<br></div>"
     )
   }
@@ -77,27 +77,27 @@ $(document).ready(function() {
     })
   }
 
-$('.ideas').delegate('#editing', 'click', function() {
-
+$('.ideas').delegate('.editing', 'click', function() {
   var id = $(this).parent().attr('data-id')
   var textArea = $(this).parent().find('span').attr('contentEditable', true)
-  var button = [this, $(this)]
-  button[1].text('Save')
+  var body = $(this).parent().find('.body').text()
+  var title = $(this).parent().find('.title').text()
+  var button = $(this)
+  button.text('Save')
+  button.toggleClass('editing')
 
   $(button).on('click', function() {
-    this.id = 'saving'
     textArea.attr('contentEditable', false)
-    var body = $(this).parent().find('.body').text()
-    var title = $(this).parent().find('.title').text()
     $.ajax({
       type: "PUT",
       url: 'api/v1/ideas.json',
       data: { id: id, postParams: { title: title,
           body: body }  },
-      success: function(response) {
-        console.log('YEAH!')
-        button[0].id = "editing"
-        button[1].text('Edit')
+      success: function() {
+        // debugger
+        console.log('Success!')
+        button.toggleClass('editing')
+        button.text('Edit')
       },
       error: function(xhr) {
         console.log(xhr.responseText)
