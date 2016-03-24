@@ -19,34 +19,36 @@ $(document).ready(function() {
   fetchIdeas()
   editIdea()
   updateIdea()
+  thumbsUp()
+  thumbsDown()
   })
 
 
-  function renderIdea(idea) {
-    $('.ideas').prepend(
-      "<div class='idea' data-id='" +
-        idea.id +
-        "'><p><h4>Title:</h4><br><span class='title'>" +
-        idea.title +
-        "</span></p>" +
-        "</h6><p><h4>Body:</h4><br><span class='body'>" +
-        idea.body +
-        "</span></p>" +
-        "</h6><p>Quality: " +
-        idea.quality +
-        "</p>" +
-        "<button id='delete-idea' name='button-fetch' class='btn btn-default btn-xs'>Delete</button>" +
-        "<button id='thumbs-up' name='button-fetch' class='btn btn-default btn-xs'>Thumbs Up</button>" +
-        "<button id='thumbs-down' name='button-fetch' class='btn btn-default btn-xs'>Thumbs Down</button>" +
-        "<button name='button-fetch' class='btn btn-default btn-xs editing'>Edit</button> " +
-        "<br></div>"
-    )
-  }
+function renderIdea(idea) {
+  $('.ideas').prepend(
+    "<div class='idea' data-id='" +
+      idea.id +
+      "'><p><h4>Title:</h4><br><span class='title'>" +
+      idea.title +
+      "</span></p>" +
+      "</h6><p><h4>Body:</h4><br><span class='body'>" +
+      idea.body +
+      "</span></p>" +
+      "</h6><p>Quality: <strong class='quality'>" +
+      idea.quality +
+      "</strong></p>" +
+      "<button id='delete-idea' name='button-fetch' class='btn btn-default btn-xs'>Delete</button>" +
+      "<button name='button-fetch' class='btn btn-default btn-xs thumbs-up'>Thumbs Up</button>" +
+      "<button name='button-fetch' class='btn btn-default btn-xs thumbs-down'>Thumbs Down</button>" +
+      "<button name='button-fetch' class='btn btn-default btn-xs editing'>Edit</button> " +
+      "<br></div>"
+  )
+}
 
-  function fetchIdeas() {
-    $.getJSON('/api/v1/ideas/', function(ideas){
-      $.each(ideas, function(index, idea){
-        renderIdea(idea)
-      })
+function fetchIdeas() {
+  $.getJSON('/api/v1/ideas/', function(ideas){
+    $.each(ideas, function(index, idea){
+      renderIdea(idea)
     })
-  }
+  })
+}
