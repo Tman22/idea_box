@@ -11,3 +11,8 @@
 /log/*
 !/log/.keep
 /tmp
+*/application.yml
+.rbenv-vars
+
+# Ignore application configuration
+/config/application.yml
