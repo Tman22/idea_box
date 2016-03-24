@@ -22,6 +22,7 @@ $(document).ready(function() {
   thumbsUp()
   thumbsDown()
   searchIdeas()
+  sortIdeas()
 })
 
 
@@ -46,37 +47,22 @@ function renderIdea(idea) {
   )
 }
 
-  function searchIdeas() {
-    $('#search').on('keydown', function() {
-    var word = this.value.toLowerCase()
-    var ideas = $('.idea')
-
-    ideas.each(function (index, idea) {
-      var idea = $(idea)
-      var ideaName = idea.find('.title').text().toLowerCase()
-
-        if (ideaName.startsWith(word)){
-          idea.show()
-        } else {
-          idea.hide()
-        }
-      })
-    })
-  }
-
-
-// function truncate(string) {
-//   if (string.length > 100) {
-//     var trimString = $.trim(string).substring(0, 100)
-//     return trimString.split(' ').slice(0, -1).join(' ') + "..."
-//   }
-//   return string
-// }
 
 function fetchIdeas() {
   $.getJSON('/api/v1/ideas/', function(ideas){
-    $.each(ideas, function(index, idea){
+    var geniusSorted = $(ideas).sort( function(nextidea, idea) {
+      return nextidea.quality.localeCompare(idea.quality)
+    })
+    $.each(geniusSorted.reverse(), function(index, idea){
       renderIdea(idea)
     })
   })
+}
+
+function truncate(string) {
+  if (string.length > 100) {
+    var trimString = $.trim(string).substring(0, 100)
+    return trimString.split(' ').slice(0, -1).join(' ') + "..."
+  }
+  return string
 }
