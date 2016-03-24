@@ -47,7 +47,7 @@ function renderIdea(idea) {
 }
 
   function searchIdeas() {
-    $('#search').on('keypress', function() {
+    $('#search').on('keydown', function() {
     var word = this.value.toLowerCase()
     var ideas = $('.idea')
 
