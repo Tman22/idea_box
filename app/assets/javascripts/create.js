@@ -19,6 +19,7 @@ function createIdea(postParams) {
       $('#idea-body').val('')
     },
     error: function(xhr) {
+      alert("All fields must be filled in!")
       console.log(xhr.responseText)
     }
   })
