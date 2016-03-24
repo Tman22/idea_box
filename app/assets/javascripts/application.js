@@ -21,7 +21,8 @@ $(document).ready(function() {
   updateIdea()
   thumbsUp()
   thumbsDown()
-  })
+  searchIdeas()
+})
 
 
 function renderIdea(idea) {
@@ -44,6 +45,33 @@ function renderIdea(idea) {
       "<br></div>"
   )
 }
+
+  function searchIdeas() {
+    $('#search').on('keypress', function() {
+    var word = this.value.toLowerCase()
+    var ideas = $('.idea')
+
+    ideas.each(function (index, idea) {
+      var idea = $(idea)
+      var ideaName = idea.find('.title').text().toLowerCase()
+
+        if (ideaName.startsWith(word)){
+          idea.show()
+        } else {
+          idea.hide()
+        }
+      })
+    })
+  }
+
+
+// function truncate(string) {
+//   if (string.length > 100) {
+//     var trimString = $.trim(string).substring(0, 100)
+//     return trimString.split(' ').slice(0, -1).join(' ') + "..."
+//   }
+//   return string
+// }
 
 function fetchIdeas() {
   $.getJSON('/api/v1/ideas/', function(ideas){
